@@ -35,9 +35,10 @@ public class Receipt {
         BigDecimal subTotal = new BigDecimal(0);
         for (Product product : products) {
             OrderItem item = findOrderItemByProduct(items, product);
-            BigDecimal itemTotal = product.getPrice().multiply(new BigDecimal(item.getCount()));
-            BigDecimal reducedPrice = product.getPrice().multiply(product.getDiscountRate()).multiply(new BigDecimal(item.getCount()));
-            subTotal = subTotal.add(itemTotal).subtract(reducedPrice);
+            BigDecimal price = product.getPrice();
+            BigDecimal availableDiscounts = product.getDiscountRate();
+            BigDecimal itemTotal = price.multiply(new BigDecimal(item.getCount()));
+            subTotal = subTotal.add(itemTotal).subtract(itemTotal.multiply(availableDiscounts));
         }
         return subTotal;
     }
